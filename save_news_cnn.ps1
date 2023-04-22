@@ -1,0 +1,1 @@
+scrapy crawl news -O out/cnn_news.csv -a fonte=cnn -a start_date=2023-04-19 --logfile out/log/cnn_news_scrapy.log
