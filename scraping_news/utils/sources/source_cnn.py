@@ -12,6 +12,14 @@ class SourceCnn(SourceBase):
     def base_url(self):
         return 'https://www.cnnbrasil.com.br/'
 
+    @property
+    def url_mtd(self):
+        return 'date'
+
+    @property
+    def pg_lgc(self):
+        return None
+
     def parse(self, response):
         for news in response.css('.home__post'):
             titulo = news.css('.home__post::attr(title)').get()

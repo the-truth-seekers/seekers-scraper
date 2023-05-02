@@ -1,9 +1,10 @@
-from scraping_news.utils.others.date_help import format_datestr_to_date, format_date_to_str
+from scraping_news.utils.others.validations import format_datestr_to_date, format_date_to_str
 from datetime import datetime, timedelta
 from abc import ABC, abstractmethod
 
 class SourceBase(ABC):
     DEFAULT_DAYS=7
+    DEFAULT_PAGES=5
     URL_BASE_WEB_ARCHIVE = 'https://web.archive.org/web/'
 
     @property
@@ -16,6 +17,16 @@ class SourceBase(ABC):
     def base_url(self):
         pass
 
+    @property
+    @abstractmethod
+    def url_mtd(self):
+        pass
+
+    @property
+    @abstractmethod
+    def pg_lgc(self):
+        pass
+
     @abstractmethod
     def parse(self, response):
         pass
@@ -24,7 +35,17 @@ class SourceBase(ABC):
     def parse_news(self, response):
         pass
 
-    def get_urls(self, start_date=None, end_date=None):
+    def get_urls(self, start_date=None, end_date=None, num_pages=None):
+        return self.get_urls_sites(start_date, end_date, num_pages)
+
+    def get_urls_sites(self, start_date=None, end_date=None, num_pages=DEFAULT_PAGES):
+        match self.url_mtd:
+            case 'date':
+                return self.get_urls_by_date(start_date, end_date)
+            case 'page':
+                return self.get_urls_by_pages(int(num_pages))
+
+    def get_urls_by_date(self, start_date=None, end_date=None):
         start = format_datestr_to_date(start_date) if (start_date != None) \
             else (datetime.now() - timedelta(days=self.DEFAULT_DAYS))
 
@@ -41,6 +62,14 @@ class SourceBase(ABC):
             dt_aux = (dt_aux + timedelta(days=1))
 
         retorno.append(self.base_url)
+
+        return retorno
+
+    def get_urls_by_pages(self, num_pages):
+        retorno = [self.base_url]
+
+        for i in range(2, num_pages):
+            retorno.append(self.base_url + self.pg_lgc.replace('@@', str(i)))
 
         return retorno
 
