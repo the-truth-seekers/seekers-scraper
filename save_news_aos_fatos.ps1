@@ -1,1 +1,1 @@
-scrapy crawl news -O out/aos_fatos_news.csv -a fonte=aos_fatos -a num_pages=5 --logfile out/log/aos_fatos_scrapy.log
+scrapy crawl news -O out/aos_fatos_news.csv -a fonte=aos_fatos -a start_page=1 -a end_page=10 --logfile out/log/aos_fatos_scrapy.log
