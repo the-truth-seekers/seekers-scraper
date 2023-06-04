@@ -1,5 +1,6 @@
 import scrapy
 from scraping_news.utils.sources.source_base import SourceBase
+from scraping_news.items import NewsItem
 
 
 class SourceCnn(SourceBase):
@@ -42,25 +43,22 @@ class SourceCnn(SourceBase):
         data = response.css('.post__data::text').get()
         autores = ''
 
+        texto_noticia = response.css('.post__content > p').extract()
+        texto_unido = " ".join(texto_noticia)
+
         for body in response.css('body'):
             autoria = response.css('.author__group a::text')
 
-            if (len(autoria) > 0):
+            if len(autoria) > 0:
                 for autor in autoria:
-                    nomeAutor = autor.get()
+                    nome_autor = autor.get()
 
                     if autores == '':
-                        autores = nomeAutor
+                        autores = nome_autor
                     else:
-                        autores = autores + ' | ' + nomeAutor
+                        autores = autores + ' | ' + nome_autor
             else:
-                possuiAutor = len(response.css('.author__first__line span')) > 0
-                autores = response.css('.author__first__line span::text').get() if possuiAutor else 'Sem Autor'
+                possui_autor = len(response.css('.author__first__line span')) > 0
+                autores = response.css('.author__first__line span::text').get() if possui_autor else 'Sem Autor'
 
-        return {
-            'titulo': titulo,
-            'autoria': autores,
-            'link': link,
-            'fonte': fonte,
-            'data': data
-        }
+        return NewsItem(titulo, texto_unido, autores, link, fonte, data)

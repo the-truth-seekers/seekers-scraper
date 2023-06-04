@@ -1,4 +1,5 @@
 import scrapy
+from scraping_news.items import NewsItem
 from scraping_news.utils.sources.source_base import SourceBase
 
 
@@ -42,10 +43,7 @@ class SourceAosFatos(SourceBase):
         data = response.css('.publish-date::text').get().strip().replace('\n', '').replace('       ', '')
         autoria = response.css('.author::text').get()
 
-        return {
-            'titulo': titulo,
-            'autoria': autoria,
-            'link': link,
-            'fonte': fonte,
-            'data': data
-        }
+        texto_noticia = response.css('.entry-content p').extract()
+        texto_unido = " ".join(texto_noticia)
+
+        return NewsItem(titulo, texto_unido, autoria, link, fonte, data)

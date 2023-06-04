@@ -1,14 +1,19 @@
 import scrapy
 from scraping_news.utils.source_help import SourceHelp
-from scraping_news.utils.others.validations import valid_input_date
-from scraping_news.utils.others.validations import valid_int
+from scraping_news.utils.others.validations import valid_input_date, valid_int, string_to_bool
 from scraping_news.utils.others.constants import FONTES
 
 
 class NewsSpider(scrapy.Spider):
     name = "news"
+    gravar_bd = 'False'  # TODO Validar campo na pipeline para ver se faz gravação dos dados na Azure
 
     def start_requests(self):
+
+        self.gravar_bd = string_to_bool(getattr(self, 'gravar_bd', 'False'))
+        if self.gravar_bd:
+            print(self.gravar_bd)
+
         parametros = {
             'p_fonte': getattr(self, 'fonte', None),
             'p_start_date': getattr(self, 'start_date', None),
@@ -31,7 +36,7 @@ class NewsSpider(scrapy.Spider):
         )
 
         for url in urls:
-            yield scrapy.Request(url, src.parse)
+            yield scrapy.Request(url, src.parse) 
 
     @staticmethod
     def criticar(parametros):

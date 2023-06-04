@@ -10,6 +10,15 @@ def format_datestr_to_date(p_date: str):
     return datetime(int(new_date[0:4]), int(new_date[4:6]), int(new_date[6:8]))
 
 
+def string_to_bool(string_value):
+    if string_value.lower() == 'true':
+        return True
+    elif string_value.lower() == 'false':
+        return False
+    else:
+        raise ValueError("A string não representa um valor booleano válido.")
+
+
 def valid_input_date(p_date: str):
     try:
         datetime.fromisoformat(p_date)
