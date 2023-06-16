@@ -1,10 +1,6 @@
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
-
-
-class ScrapingNewsPipeline:
-    def process_item(self, item, spider):
-        return item
+from scraping_news.utils.services.noticia_service import NoticiaService
 
 
 class DuplicatesPipeline:
@@ -21,8 +17,11 @@ class DuplicatesPipeline:
 
 
 class AzurePipeline:
+    def __init__(self):
+        pass
+
     def process_item(self, item, spider):
         if spider.gravar_bd:
-            # TODO Gravação na base de dados da Azure
-            print()
-
+            adapter = ItemAdapter(item)
+            ns = NoticiaService()
+            ns.inserir_noticia(adapter["link"])

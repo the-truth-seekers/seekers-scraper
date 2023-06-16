@@ -6,13 +6,14 @@ from scraping_news.utils.others.constants import FONTES
 
 class NewsSpider(scrapy.Spider):
     name = "news"
-    gravar_bd = 'False'  # TODO Validar campo na pipeline para ver se faz gravação dos dados na Azure
+    gravar_bd = 'False'
 
     def start_requests(self):
 
         self.gravar_bd = string_to_bool(getattr(self, 'gravar_bd', 'False'))
+
         if self.gravar_bd:
-            print(self.gravar_bd)
+            print("Gravação no banco habilitada")
 
         parametros = {
             'p_fonte': getattr(self, 'fonte', None),

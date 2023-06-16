@@ -1,0 +1,4 @@
+$env:DB_SERVER=''
+$env:DATABASE_NAME=''
+$env:DB_USERNAME=''
+$env:DB_PASSWORD=''

@@ -81,6 +81,7 @@ PROXY_MODE = 0
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "scraping_news.pipelines.DuplicatesPipeline": 300,
+    "scraping_news.pipelines.AzurePipeline": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
