@@ -1,0 +1,1 @@
+scrapy crawl news -a fonte=cnn -a start_date=2023-06-07 -a gravar_bd=True --logfile out/log/bd/cnn_fatos_news_scrapy.log
