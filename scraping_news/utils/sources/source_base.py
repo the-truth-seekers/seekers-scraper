@@ -1,3 +1,4 @@
+import logging
 from scraping_news.utils.others.validations import format_datestr_to_date, format_date_to_str
 from datetime import datetime, timedelta
 from abc import ABC, abstractmethod
@@ -6,6 +7,7 @@ from abc import ABC, abstractmethod
 class SourceBase(ABC):
     DEFAULT_DAYS = 7
     URL_BASE_WEB_ARCHIVE = 'https://web.archive.org/web/'
+    logger = logging.getLogger(__name__)
 
     @property
     @abstractmethod
@@ -41,8 +43,10 @@ class SourceBase(ABC):
     def get_urls_sites(self, start_date=None, end_date=None, start_page=1, end_page=5):
         match self.url_mtd:
             case 'date':
+                self.logger.info('url by date')
                 return self.get_urls_by_date(start_date, end_date)
             case 'page':
+                self.logger.info('url by page')
                 return self.get_urls_by_pages(int(start_page), int(end_page))
 
     def get_urls_by_date(self, start_date=None, end_date=None):

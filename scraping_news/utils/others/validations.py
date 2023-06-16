@@ -23,7 +23,9 @@ def valid_input_date(p_date: str):
     try:
         datetime.fromisoformat(p_date)
         return True
-    except Exception:
+    except ValueError:
+        return False
+    except TypeError:
         return False
 
 

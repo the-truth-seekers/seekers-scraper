@@ -1,20 +1,24 @@
+import logging
 from scraping_news.utils.sources.source_cnn import SourceCnn
 from scraping_news.utils.sources.source_aos_fatos import SourceAosFatos
 from scraping_news.utils.sources.source_base import SourceBase
 
-class SourceHelp():
+
+class SourceHelp:
+    loger = None
+
     def __init__(self):
-        pass
+        self.logger = logging.getLogger(__name__)
 
     def get_model(self, name: str) -> SourceBase:
         fonte = name.lower()
         match fonte:
             case 'cnn':
-                print('Fonte selecionada: CNN')
+                self.logger.info('Fonte selecionada: CNN')
                 return SourceCnn()
             case 'aos_fatos':
-                print('Fonte selecionada: Aos Fatos')
+                self.logger.info('Fonte selecionada: Aos Fatos')
                 return SourceAosFatos()
             case _:
-                print('Fonte informada inválida')
-                raise Exception()
+                self.logger.error('Fonte informada inválida')
+                raise Exception('Fonte informada inválida')
