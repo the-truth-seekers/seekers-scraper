@@ -38,6 +38,8 @@ class NewsSpider(scrapy.Spider):
             end_page=parametros['p_end_page'],
         )
 
+        self.logger.info('Quantidade de notícias: ' + str(len(urls)))
+
         for url in urls:
             yield scrapy.Request(url, src.parse) 
 

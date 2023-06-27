@@ -63,3 +63,19 @@ class BdAux:
                 print("Query executada com sucesso.")
         except pyodbc.Error as e:
             print(f"Ocorreu um erro ao executar a query: {e}")
+
+    def get_query(self, query, *args):
+        if self.cursor is None:
+            print("A conexão não foi estabelecida.")
+            return
+
+        try:
+            self.cursor.execute(query, *args)
+            rows = self.cursor.fetchall()
+
+            if self.hab_log:
+                print("Query executada com sucesso.")
+
+            return rows
+        except pyodbc.Error as e:
+            print(f"Ocorreu um erro ao executar a query: {e}")

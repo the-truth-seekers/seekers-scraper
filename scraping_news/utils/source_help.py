@@ -20,5 +20,16 @@ class SourceHelp:
                 self.logger.info('Fonte selecionada: Aos Fatos')
                 return SourceAosFatos()
             case _:
-                self.logger.error('Fonte informada inválida')
-                raise Exception('Fonte informada inválida')
+                self.logger.warning('Fonte informada não reconhecida')
+                raise Exception('Fonte informada não reconhecida')
+
+    def get_model_by_url(self, url: str) -> SourceBase | None:
+        if url.find('cnn') > -1:
+            self.logger.warning(url + ' | Fonte selecionada: CNN')
+            return SourceCnn()
+        if url.find('aosfatos'):
+            self.logger.warning(url + ' | Fonte selecionada: Aos Fatos')
+            return SourceAosFatos()
+        else:
+            self.logger.warning('Fonte informada não reconhecida')
+            return None

@@ -26,3 +26,12 @@ class NewsItem(Item):
         self['data'] = data
         self.set_texto_noticia(texto_noticia)
 
+
+class SimpleNewsItem(Item):
+    def __init__(self, news_item: NewsItem, *args, **kwargs):
+        super(SimpleNewsItem, self).__init__(*args, **kwargs)
+        self['texto_noticia'] = news_item.get('texto_noticia')
+        self['link'] = news_item.get('link')
+
+    texto_noticia = Field()
+    link = Field()
