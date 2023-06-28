@@ -2,6 +2,8 @@ import os
 import sys
 import scrapy
 import logging
+
+from scraping_news.utils.aws.s3_aux import send_file_to_bucket
 from scraping_news.utils.source_help import SourceHelp
 from scraping_news.utils.services.noticia_service import NoticiaService
 
@@ -10,10 +12,20 @@ class NewsTextSpider(scrapy.Spider):
     name = "news_text"
     gravar_bd = False
     logger = logging.getLogger(__name__)
+    bucket_name = None
+    output_file = None
 
     def start_requests(self):
+        args = sys.argv
         ns = NoticiaService()
         urls = ns.consultar_link_extracao()
+
+        output_file_index = args.index('-O')
+        self.bucket_name = getattr(self, 'bucket_name', None)
+
+        self.criticar(output_file_index, self.bucket_name)
+
+        self.output_file = args[output_file_index + 1]
 
         self.logger.info('Quantidade de notícias: ' + str(len(urls)))
 
@@ -29,25 +41,15 @@ class NewsTextSpider(scrapy.Spider):
                 }
             )
 
+    def closed(self, reason):
+        filepath = os.path.abspath(self.output_file)
+        send_file_to_bucket(self.bucket_name, filepath, 'extracao/extracao.csv')
+        self.logger.info("Enviado para o bucket: " + self.bucket_name)
+
     @staticmethod
-    def closed(reason):
-        # Subir arquivo para o bucket
-        args = sys.argv
+    def criticar(output_file_index, bucket_name):
+        if output_file_index < 0:
+            raise Exception('output_file: deve ser indicado um arquivo de saída no comando')
 
-        output_file_index = args.index('-O')
-        output_file = args[output_file_index + 1]
-        filepath = os.path.abspath(output_file)
-
-        # TODO  Fazer serviço para fazer o upload do arquivo no S3
-        #       Se basear no código abaixo e no código do poupay do twitter
-        #       Método vai receber o filepath e filepath que vai ser gravado no bucket,
-        #       pegar o bucket_name por variável de ambiente
-
-        '''
-        import boto3
-        bucket_name = 'nome-do-seu-bucket'
-        s3_key = 'extracao/extracao.csv'
-
-        s3 = boto3.client('s3')
-        s3.upload_file(filepath, bucket_name, s3_key)
-        '''
+        if bucket_name is None:
+            raise Exception('bucket_name: deve ser indicado o parâmetro bucket_name')

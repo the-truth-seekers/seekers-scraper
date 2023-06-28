@@ -1,0 +1,1 @@
+scrapy crawl news_text -O out/extract.csv -a bucket_name=bucketextracao --logfile out/log/extracaotexto.log
