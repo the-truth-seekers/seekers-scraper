@@ -9,9 +9,9 @@ COPY cron-file /etc/cron.d/cron-file
 
 RUN apt-get update && apt-get -y install cron
 
-RUN chmod +x extracao_to_bucket.sh && \
-    chmod 0644 /etc/cron.d/cron-file && \
-    crontab /etc/cron.d/cron-file
+RUN chmod +x extracao_to_bucket.sh
+RUN chmod 0644 /etc/cron.d/cron-file
+RUN crontab /etc/cron.d/cron-file
 
 RUN mkdir -p out/log && \
     chmod 777 install-pyodbc.sh && \
