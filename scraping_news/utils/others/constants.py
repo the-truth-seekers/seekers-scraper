@@ -1,1 +1,1 @@
-FONTES=['cnn', 'aos_fatos']
+FONTES = ['cnn', 'aos_fatos', 'g1']

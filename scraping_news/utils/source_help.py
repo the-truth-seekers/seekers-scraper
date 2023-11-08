@@ -2,6 +2,7 @@ import logging
 from scraping_news.utils.sources.source_cnn import SourceCnn
 from scraping_news.utils.sources.source_aos_fatos import SourceAosFatos
 from scraping_news.utils.sources.source_base import SourceBase
+from scraping_news.utils.sources.source_g1 import SourceG1
 
 
 class SourceHelp:
@@ -19,6 +20,9 @@ class SourceHelp:
             case 'aos_fatos':
                 self.logger.info('Fonte selecionada: Aos Fatos')
                 return SourceAosFatos()
+            case 'g1':
+                self.logger.info('Fonte selecionada: G1')
+                return SourceG1()
             case _:
                 self.logger.warning('Fonte informada não reconhecida')
                 raise Exception('Fonte informada não reconhecida')
@@ -27,9 +31,12 @@ class SourceHelp:
         if url.find('cnn') > -1:
             self.logger.warning(url + ' | Fonte selecionada: CNN')
             return SourceCnn()
-        if url.find('aosfatos'):
+        if url.find('aosfatos') > -1:
             self.logger.warning(url + ' | Fonte selecionada: Aos Fatos')
             return SourceAosFatos()
+        if url.find('g1') > -1:
+            self.logger.warning(url + ' | Fonte selecionada: G1')
+            return SourceG1()
         else:
             self.logger.warning('Fonte informada não reconhecida')
             return None
