@@ -81,7 +81,7 @@ PROXY_MODE = 0
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "scraping_news.pipelines.DuplicatesPipeline": 300,
-    "scraping_news.pipelines.FormatarArquivo": 400,
+    #"scraping_news.pipelines.FormatarArquivo": 400,
     "scraping_news.pipelines.AzurePipeline": 500,
 }
 

@@ -36,10 +36,12 @@ class SourceG1(SourceBase):
             )
 
     def parse_news(self, response):
-        titulo = response.meta.get('titulo')
+        titulo = response.css('.content-head__title::text').get()
         link = response.meta.get('link')
 
-        if len(response.css('.playlist')) > 0 or response.css('.blink::text').get() == 'Ao vivo' or link.find('ge.globo.com') > -1:
+        if (len(response.css('.content-head__title')) == 0 or
+                len(response.css('.vt-video-info__title')) > 0 or len(response.css('.playlist')) > 0
+                or response.css('.blink::text').get() == 'Ao vivo' or link.find('ge.globo.com') > -1):
             return None
 
         fonte = self.name
