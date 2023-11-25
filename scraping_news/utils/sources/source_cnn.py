@@ -38,7 +38,9 @@ class SourceCnn(SourceBase):
     def parse_news(self, response):
         fonte = self.name
 
-        titulo = response.meta.get('titulo')
+        titulo = response.meta.get('titulo') or response.css('.post__title::text').get()
+        titulo = titulo.strip()
+
         link = response.meta.get('link')
         data = response.css('.post__data::text').get()
         autores = ''

@@ -32,14 +32,16 @@ class NewsTextSpider(scrapy.Spider):
         for url in urls:
             sh = SourceHelp()
             src = sh.get_model_by_url(url)
-            yield scrapy.Request(
-                url,
-                src.parse_news,
-                meta={
-                    'titulo': '',
-                    'link': url
-                }
-            )
+
+            if src is not None:
+                yield scrapy.Request(
+                    url,
+                    src.parse_news,
+                    meta={
+                        'titulo': '',
+                        'link': url
+                    }
+                )
 
     def closed(self, reason):
         filepath = os.path.abspath(self.output_file)

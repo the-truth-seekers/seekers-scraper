@@ -29,14 +29,14 @@ class SourceHelp:
 
     def get_model_by_url(self, url: str) -> SourceBase | None:
         if url.find('cnn') > -1:
-            self.logger.warning(url + ' | Fonte selecionada: CNN')
+            self.logger.info(url + ' | Fonte selecionada: CNN')
             return SourceCnn()
         if url.find('aosfatos') > -1:
-            self.logger.warning(url + ' | Fonte selecionada: Aos Fatos')
+            self.logger.info(url + ' | Fonte selecionada: Aos Fatos')
             return SourceAosFatos()
         if url.find('g1') > -1:
-            self.logger.warning(url + ' | Fonte selecionada: G1')
+            self.logger.info(url + ' | Fonte selecionada: G1')
             return SourceG1()
         else:
-            self.logger.warning('Fonte informada não reconhecida')
+            self.logger.warning(url + ' | Fonte informada não reconhecida')
             return None
